@@ -1,0 +1,180 @@
+<html>
+    <head>
+        <style>
+            ul.no-bullets {
+                list-style-type: none; /* Remove bullets */
+                padding: 0; /* Remove padding */
+                margin: 0; /* Remove margins */
+            }
+        </style>
+        <script>
+            //add to do list item in the local storage
+            function addTodoListItem (itemTitle) {
+                //get the local storage to do list
+                const todoList = getTodoListFromLocalStorage()
+
+                //update to do list with new item and assign it to the updatedTodoList constant variable
+                const updatedTodoList = updateTodoListWithNewItem(todoList, itemTitle)
+
+                //store the updated to do list in the local storage
+                storeTodoListInLocalStorage(updatedTodoList)
+
+                //display the new item in the UI
+                displayTodoList(updatedTodoList)
+            }
+
+            function updateTodoListWithNewItem(todoList, itemTitle) {
+                //check if the todoList variable is an array type variable and assign the array type variable to updatedTodoList
+                let updatedTodoList = validateTodoListVariable(todoList)
+
+                //add the item title to the updatedTodoList array
+                updatedTodoList.push(itemTitle);
+
+                // return the updated to do list back to where the function was called from
+                return updatedTodoList;  
+            }
+            
+
+            function storeTodoListInLocalStorage(updatedTodoList) {
+
+                //check if the updatedTodoList variable is an array type variable and assign the array type variable to validatedTodoList
+                const validatedTodoList = validateTodoListVariable(updatedTodoList)
+
+                //convert te to do list array into a json string    
+                const jsonTodoList = JSON.stringify(validatedTodoList);
+
+                //stor the to do list array into local storage
+                localStorage.setItem('toDoList', jsonTodoList)
+
+            }
+
+
+            function validateTodoListVariable(todoList) {
+                let updatedTodoList = todoList;
+                //check if the updatedTodoList variable is an array type variable and if it is not, then execute the if condition body
+                if(!Array.isArray(updatedTodoList)) {
+                    //assigning an empty array to the updatedTodoList variable
+                    updatedTodoList = [];
+                }
+                return updatedTodoList
+            }
+        </script>
+    </head>
+    <body>
+        <h1>To do List</h1>
+        <div>
+            <input id="addItemTitle" type="search" placeholder="To do item title"/>
+            <button  onclick="addTodoListItem(document.getElementById('addItemTitle').value)">Add</button>
+        </div>
+        <ul id="myTodoList" class="no-bullets"></ul>
+        
+    </body>
+    <script>
+        //get to do list from local storage
+        const todoList = getTodoListFromLocalStorage()
+
+        //display the item on the UI
+        displayTodoList(todoList)
+
+
+
+        //function to get the to do list from the local storage
+        function getTodoListFromLocalStorage() {
+            const todoListJsonString = localStorage.getItem('toDoList');
+            return JSON.parse(todoListJsonString);
+        }
+
+        //function to loop through the todo list and display the items
+        function displayTodoList(todoList) {
+            //clear the html list elements
+            clearListElements()
+            //go through the to do list items
+            for (var itemIndex in todoList) {
+                //create a new to-do list element in the ui
+                createListElement(todoList[itemIndex])
+            }
+        }
+
+        function clearListElements(){
+            //get the html element by mytodolist id
+            var myTodoList = document.getElementById('myTodoList');
+            //empty the inner html
+            myTodoList.innerHTML = '';
+        }
+
+        //function to create the ui element for the todolist item title
+        function createListElement(itemTitle) {
+            var myTodoList = document.getElementById("myTodoList");
+                
+                var listItem = document.createElement("li");
+                listItem.setAttribute('id', `li_${itemTitle}`);
+                
+                var divItem = document.createElement("div");
+                divItem.setAttribute('id', `div_${itemTitle}`);
+
+                var inputItem = document.createElement("input");
+                inputItem.setAttribute('id', `input_${itemTitle}`);
+                inputItem.setAttribute('type', `checkbox`);
+                inputItem.setAttribute('name', `input_name_${itemTitle}`);
+                inputItem.setAttribute('value', itemTitle);
+
+                var labelItem = document.createElement("label");
+                labelItem.setAttribute('for', `input_name_${itemTitle}`);
+                labelItem.setAttribute('value', itemTitle);
+                labelItem.innerHTML = itemTitle;
+
+                var buttonItem = document.createElement("button");
+                buttonItem.setAttribute('type', `input_name_${itemTitle}`);
+                buttonItem.innerHTML = 'Delete';
+                
+                divItem.appendChild(inputItem);
+                divItem.appendChild(labelItem);
+                divItem.appendChild(buttonItem);
+
+                listItem.appendChild(divItem);
+                
+                myTodoList.appendChild(listItem);
+        }
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // const existingTodoListItems = getTodoListItems()
+
+        // if(Array.isArray(existingTodoListItems)) {
+        //     existingTodoListItems.forEach(item => {
+        //         addTodoListItem(item);
+        //     });
+
+        // } else{
+        //     var itemsList = ['pick up dry cleaners','take kids to school','go to hair appointment']
+        //     itemsList.forEach(item => {
+        //         addTodoListItem(item);
+        //     });
+        // }
+
+        // function getTodoListItems() {
+
+        // }
+    </script>
+</html>
