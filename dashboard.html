@@ -7,14 +7,19 @@
                 margin: 0; /* Remove margins */
             }
         </style>
+        <script src="activity.js"></script>
         <script>
             //add to do list item in the local storage
-            function addTodoListItem (itemTitle) {
+            function addTodoListItem (activityTitle) {
+                //create an item object with the following data properties {title: itemTitle, checked: true, status: "ACTIVE"}
+                const activity = new Activity(activityTitle, false, 'ACTIVE');
+                
+                
                 //get the local storage to do list
                 const todoList = getTodoListFromLocalStorage()
 
                 //update to do list with new item and assign it to the updatedTodoList constant variable
-                const updatedTodoList = updateTodoListWithNewItem(todoList, itemTitle)
+                const updatedTodoList = updateTodoListWithNewItem(todoList, activity)
 
                 //store the updated to do list in the local storage
                 storeTodoListInLocalStorage(updatedTodoList)
@@ -23,12 +28,12 @@
                 displayTodoList(updatedTodoList)
             }
 
-            function updateTodoListWithNewItem(todoList, itemTitle) {
+            function updateTodoListWithNewItem(todoList, activity) {
                 //check if the todoList variable is an array type variable and assign the array type variable to updatedTodoList
                 let updatedTodoList = validateTodoListVariable(todoList)
 
                 //add the item title to the updatedTodoList array
-                updatedTodoList.push(itemTitle);
+                updatedTodoList.push(activity);
 
                 // return the updated to do list back to where the function was called from
                 return updatedTodoList;  
@@ -91,7 +96,14 @@
             //go through the to do list items
             for (var itemIndex in todoList) {
                 //create a new to-do list element in the ui
-                createListElement(todoList[itemIndex])
+                const activity = todoList[itemIndex];
+
+                //check if the version of the activity data is the old or new version
+                if(activity.title === undefined) {
+                    createListElementV1(activity)
+                }else {
+                    createListElementV2(activity)
+                }
             }
         }
 
@@ -103,28 +115,29 @@
         }
 
         //function to create the ui element for the todolist item title
-        function createListElement(itemTitle) {
+        function createListElementV2(activity) {
             var myTodoList = document.getElementById("myTodoList");
                 
                 var listItem = document.createElement("li");
-                listItem.setAttribute('id', `li_${itemTitle}`);
+                listItem.setAttribute('id', `li_${activity.title}`);
                 
                 var divItem = document.createElement("div");
-                divItem.setAttribute('id', `div_${itemTitle}`);
+                divItem.setAttribute('id', `div_${activity.title}`);
 
                 var inputItem = document.createElement("input");
-                inputItem.setAttribute('id', `input_${itemTitle}`);
+                inputItem.setAttribute('id', `input_${activity.title}`);
                 inputItem.setAttribute('type', `checkbox`);
-                inputItem.setAttribute('name', `input_name_${itemTitle}`);
-                inputItem.setAttribute('value', itemTitle);
+                inputItem.setAttribute('name', `input_name_${activity.title}`);
+                inputItem.setAttribute('value', activity.title);
+                inputItem.setAttribute('onclick', toggleActivity(activity))
 
                 var labelItem = document.createElement("label");
-                labelItem.setAttribute('for', `input_name_${itemTitle}`);
-                labelItem.setAttribute('value', itemTitle);
-                labelItem.innerHTML = itemTitle;
+                labelItem.setAttribute('for', `input_name_${activity.title}`);
+                labelItem.setAttribute('value', activity.title);
+                labelItem.innerHTML = activity.title;
 
                 var buttonItem = document.createElement("button");
-                buttonItem.setAttribute('type', `input_name_${itemTitle}`);
+                buttonItem.setAttribute('type', `input_name_${activity.title}`);
                 buttonItem.innerHTML = 'Delete';
                 
                 divItem.appendChild(inputItem);
@@ -136,45 +149,50 @@
                 myTodoList.appendChild(listItem);
         }
 
+        function createListElementV1(activityTitle) {
+            var myTodoList = document.getElementById("myTodoList");
+                
+                var listItem = document.createElement("li");
+                listItem.setAttribute('id', `li_${activityTitle}`);
+                
+                var divItem = document.createElement("div");
+                divItem.setAttribute('id', `div_${activityTitle}`);
+
+                var inputItem = document.createElement("input");
+                inputItem.setAttribute('id', `input_${activityTitle}`);
+                inputItem.setAttribute('type', `checkbox`);
+                inputItem.setAttribute('name', `input_name_${activityTitle}`);
+                inputItem.setAttribute('value', activityTitle);
+                inputItem.setAttribute('onclick', toggleActivity(activityTitle))
+
+                var labelItem = document.createElement("label");
+                labelItem.setAttribute('for', `input_name_${activityTitle}`);
+                labelItem.setAttribute('value', activityTitle);
+                labelItem.innerHTML = activityTitle;
+
+                var buttonItem = document.createElement("button");
+                buttonItem.setAttribute('type', `input_name_${activityTitle}`);
+                buttonItem.innerHTML = 'Delete';
+                
+                divItem.appendChild(inputItem);
+                divItem.appendChild(labelItem);
+                divItem.appendChild(buttonItem);
+
+                listItem.appendChild(divItem);
+                
+                myTodoList.appendChild(listItem);
+        }
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // const existingTodoListItems = getTodoListItems()
-
-        // if(Array.isArray(existingTodoListItems)) {
-        //     existingTodoListItems.forEach(item => {
-        //         addTodoListItem(item);
-        //     });
-
-        // } else{
-        //     var itemsList = ['pick up dry cleaners','take kids to school','go to hair appointment']
-        //     itemsList.forEach(item => {
-        //         addTodoListItem(item);
-        //     });
-        // }
-
-        // function getTodoListItems() {
-
-        // }
+        function toggleActivity(activity) {
+            //get the todolist from database/local storage
+            //find the matching activity from the todolist
+            
+            //check if the version of the activity data is the old or new version
+            if(activity.title === undefined) {
+                //convert the old data model to the new data model which consists of the 'checked' status
+            } else {
+                //toggle the 'checked' property of the activity object 
+            }
+        }
     </script>
 </html>
