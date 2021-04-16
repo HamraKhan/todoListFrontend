@@ -1,28 +1,59 @@
 <html>
-    <head>
-        
-        <link rel="stylesheet" href="style.css" />
-        <style>
-            ul.no-bullets {
-                list-style-type: none; /* Remove bullets */
-                padding: 0; /* Remove padding */
-                margin: 0; /* Remove margins */
-            }
-        </style>
-        <script src="activity.js"></script>
-        <script>
-        </script>
-    </head>
-    <body class="container">
-        <h1 class="app-title">Todo List</h1>
-        <object data="clipboard.svg" style="width: 80px; height: 80px;"> </object>
-        <div>
-            <input class="js-todo-input" id="addItemTitle" type="search" placeholder="To do item title"/>
-            <button  onclick="addTodoListItem(document.getElementById('addItemTitle').value)">Add</button>
+
+<head>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script src="activity.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body class="yellow lighten-2">
+    <div class="container">
+        <!-- Page Content goes here -->
+
+        <div class="card-content valign center-block">
+            <div class="row">
+                <div class='container'>
+
+                    <div class='cyber-text'>Todo List</div>
+                </div>
+            </div>
+
+            <div class="card-content valign center-block">
+                <div class="row">
+                    <div class="center-align">
+                        <div class="input-field search">
+                            <input id="addItemTitle" placeholder="Todo title" type="text"
+                                class="validate yellow lighten-2">
+                        </div>
+                        <div class="input-field search" style="margin-top: 25px;">
+                            <a class="btn-floating btn-small waves-effect waves-light blue lighten-1"
+                                onclick="addTodoListItem(document.getElementById('addItemTitle').value, Date.now())">
+                                <i class="material-icons">add</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <ul id="myTodoList" class="todo-list js-todo-list"></ul>
-        
-    </body>
-    
-    <script src="todolist.js"></script>
+
+        <div class="row">
+            <ul id="myTodoList" class="collection" style="border: none;">
+            </ul>
+        </div>
+    </div>
+</body>
+
+<script src="todolist.js"></script>
+
 </html>
