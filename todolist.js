@@ -78,11 +78,8 @@ function displayTodoList(todoList) {
         const activity = todoList[itemIndex];
 
         //check if the version of the activity data is the old or new version
-        if (activity.title === undefined) {
-            createListElementV1(activity)
-        } else {
-            createListElementV2(activity)
-        }
+        createListElement(activity)
+
     }
 }
 
@@ -94,7 +91,7 @@ function clearListElements() {
 }
 
 //function to create the ui element for the todolist item title
-function createListElementV2(activity) {
+function createListElement(activity) {
     var myTodoList = document.getElementById("myTodoList");
 
     var listItem = document.createElement("li");
@@ -112,40 +109,6 @@ function createListElementV2(activity) {
                 <i class="material-icons">delete</i>
             </button>
         </li>`
-
-    myTodoList.appendChild(listItem);
-}
-
-function createListElementV1(activityTitle) {
-    var myTodoList = document.getElementById("myTodoList");
-
-    var listItem = document.createElement("li");
-    listItem.setAttribute('id', `li_${activityTitle}`);
-
-    var divItem = document.createElement("div");
-    divItem.setAttribute('id', `div_${activityTitle}`);
-
-    var inputItem = document.createElement("input");
-    inputItem.setAttribute('id', `input_${activityTitle}`);
-    inputItem.setAttribute('type', `checkbox`);
-    inputItem.setAttribute('name', `input_name_${activityTitle}`);
-    inputItem.setAttribute('value', activityTitle);
-    inputItem.setAttribute('onclick', `toggleActivity("${activityTitle}")`)
-
-    var labelItem = document.createElement("label");
-    labelItem.setAttribute('for', `input_name_${activityTitle}`);
-    labelItem.setAttribute('value', activityTitle);
-    labelItem.innerHTML = activityTitle;
-
-    var buttonItem = document.createElement("button");
-    buttonItem.setAttribute('type', `input_name_${activityTitle}`);
-    buttonItem.innerHTML = 'Delete';
-
-    divItem.appendChild(inputItem);
-    divItem.appendChild(labelItem);
-    divItem.appendChild(buttonItem);
-
-    listItem.appendChild(divItem);
 
     myTodoList.appendChild(listItem);
 }
@@ -184,19 +147,8 @@ function toggleActivity(activityTitle) {
 
     //find the matching activity from the todolist
     var matchingActivityIndex = todoList.findIndex(activity => {
-        if (activity.title === undefined && activity === activityTitle) return true;
         if (activity.title === activityTitle) return true;
     });
-
-
-    //check if the version of the activity data is the old or new version
-    if (todoList[matchingActivityIndex].title === undefined) {
-        //convert the old data model to the new data model which consists of the 'checked' status
-        const newModeledActivity = convertOldDataModel(todoList[matchingActivityIndex]);
-
-        todoList[matchingActivityIndex] = newModeledActivity;
-
-    }
 
     //toggle the 'checked' property of the activity object 
     todoList[matchingActivityIndex].checked = !todoList[matchingActivityIndex].checked;
