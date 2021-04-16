@@ -1,7 +1,7 @@
 //add to do list item in the local storage
-function addTodoListItem(activityTitle, todoDate) {
+function addTodoListItem(activityTitle) {
     //create an item object with the following data properties {title: itemTitle, checked: true, status: "ACTIVE"}
-    const activity = new Activity(activityTitle, false, 'ACTIVE', todoDate);
+    const activity = new Activity(activityTitle, false, 'ACTIVE', Date.now());
 
 
     //get the local storage to do list
@@ -79,7 +79,6 @@ function displayTodoList(todoList) {
 
         //check if the version of the activity data is the old or new version
         createListElement(activity)
-
     }
 }
 
@@ -156,9 +155,4 @@ function toggleActivity(activityTitle) {
     //store the new list in the local storage
     storeTodoListInLocalStorage(todoList)
 
-}
-function convertOldDataModel(activityTitle) {
-    //create an item object with the following data properties {title: itemTitle, checked: true, status: "ACTIVE"}
-    const activity = new Activity(activityTitle, false, 'ACTIVE');
-    return activity;
 }
