@@ -1,4 +1,4 @@
-class Activity {
+class TodoActivity {
     title = null;
     checked = false;
     status =  'ACTiVE';
