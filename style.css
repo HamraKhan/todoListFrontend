@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rancho&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Molle:ital@1&display=swap');
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+/* label focus color */
+.input-field input:focus+label {
+    color: #42a5f5 !important;
+}
+
+.input-field input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #42a5f5 !important;
+    opacity: 1;
+    /* Firefox */
+}
+
+.input-field input {
+    border-bottom: 1px solid #42a5f5 !important;
+}
+
+/* label underline focus color */
+.row .input-field input:focus {
+    border-bottom: 1px solid #42a5f5 !important;
+    box-shadow: 0 1px 0 0 #42a5f5 !important
+}
+
+.collection-item {
+    border: none !important;
+    min-height: 0px !important;
+    padding-left: 0px !important;
+}
+
+.title {
+    font-size: 22px !important;
+    color: #616161 !important;
+}
+
+.sub-title {
+    font-size: 1.1rem !important;
+    color: #616161 !important;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    display: inline-block;
+    height: 25px;
+    line-height: 25px;
+    font-size: 1rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.search {
+    display: inline-block;
+}
+
+.delete-btn {
+    float: left;
+    right: auto;
+    margin-left: 20px;
+}
+
+.container .cyber-text {
+    position: relative;
+    text-transform: uppercase;
+    font-size: 110px;
+    font-family: 'Catamaran', sans-serif;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.container .cyber-text:before {
+    position: absolute;
+    content: 'Todo List';
+    color: rgba(73, 167, 255, 0.8);
+    top: 5px;
+    left: 10px;
+}
+
+.container .cyber-text:after {
+    z-index: -1;
+    position: absolute;
+    content: 'Todo List';
+    color: rgba(255, 56, 56, 0.8);
+    top: -5px;
+    left: 8px;
+}
+
+.delete-btn {
+    float: left !important;
+    right: auto !important;
+    margin-left: 20px !important;
+}
