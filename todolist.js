@@ -96,7 +96,7 @@ function createListElement(activity) {
     var listItem = document.createElement("li");
     listItem.setAttribute('id', `li_${activity.title}`);
     listItem.setAttribute('class', `todo-item ${activity.checked}`);
-
+    console.log(activity.todoDate)
     listItem.innerHTML = ` <li class="collection-item avatar yellow lighten-2">          
             <label>
                 <input type="checkbox" id="test6" checked="${activity.checked}" onclick="toggleActivity("${activity.title}")"  />
