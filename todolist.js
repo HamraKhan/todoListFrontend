@@ -1,7 +1,7 @@
 //add to do list item in the local storage
 function addTodoListItem(activityTitle) {
-    //create an item object with the following data properties {title: itemTitle, checked: true, status: "ACTIVE"}
-    const activity = new TodoActivity(activityTitle, false, 'ACTIVE', Date.now());
+    //create an item object with the following data properties {id: UUID, title: itemTitle, checked: true, status: "ACTIVE"}
+    const activity = new TodoActivity(create_UUID(), activityTitle, false, 'ACTIVE', Date.now());
 
 
     //get the local storage to do list
@@ -77,8 +77,10 @@ function displayTodoList(todoList) {
         //create a new to-do list element in the ui
         const activity = todoList[itemIndex];
 
-        //check if the version of the activity data is the old or new version
-        createListElement(activity)
+        if (todoList[itemIndex].status==="ACTIVE") {
+            //check if the version of the activity data is the old or new version
+            createListElement(activity)
+        }
     }
 }
 
@@ -94,21 +96,46 @@ function createListElement(activity) {
     var myTodoList = document.getElementById("myTodoList");
 
     var listItem = document.createElement("li");
-    listItem.setAttribute('id', `li_${activity.title}`);
+    listItem.setAttribute('id', `li_${activity.id}`);
     listItem.setAttribute('class', `todo-item ${activity.checked}`);
     listItem.innerHTML = ` <li class="collection-item avatar yellow lighten-2">          
             <label>
-                <input type="checkbox" id="test6" checked="${activity.checked}" onclick="toggleActivity("${activity.title}")"  />
+                <input type="checkbox" id="test6" ${inputCheckboxToggle(activity.checked)} onclick="toggleActivity('${activity.id}')"  />
                 <span class="title">${activity.title}</span> <br />
                 <span class="sub-title">${formatToDoDate(activity.todoDate)}</span>
             </label>
             <button type="submit"
-                class="secondary-content btn-floating btn-small waves-effect waves-light red delete-btn">
+                class="secondary-content btn-floating btn-small waves-effect waves-light red delete-btn"
+                onclick="deleteItemFromTodoList('${activity.id}')">
                 <i class="material-icons">delete</i>
             </button>
         </li>`
 
     myTodoList.appendChild(listItem);
+}
+function deleteItemFromTodoList(listItemId) {
+    //get to do list from local storage
+    const todoList = getTodoListFromLocalStorage()
+    let updatedTodoList=[]
+    
+    //go through the to do list items
+    for (var itemIndex in todoList) {
+        if (todoList[itemIndex].id===listItemId) {
+            todoList[itemIndex].status="DEACTIVATED"
+        }
+        updatedTodoList.push(todoList[itemIndex])
+    }
+
+    //store the updated to do list in the local storage
+    storeTodoListInLocalStorage(updatedTodoList)
+
+    //display the new item in the UI
+    displayTodoList(updatedTodoList)
+}
+function inputCheckboxToggle(state) {
+    if (state){
+        return "checked='true'"
+    }
 }
 
 function formatToDoDate(todoDate) {
@@ -138,14 +165,14 @@ function formatToDoDate(todoDate) {
     return formattedTime
 }
 
-function toggleActivity(activityTitle) {
+function toggleActivity(activityId) {
     //get the todolist from database/local storage
     const todoList = getTodoListFromLocalStorage()
 
 
     //find the matching activity from the todolist
     var matchingActivityIndex = todoList.findIndex(activity => {
-        if (activity.title === activityTitle) return true;
+        if (activity.id === activityId) return true;
     });
 
     //toggle the 'checked' property of the activity object 
@@ -154,4 +181,14 @@ function toggleActivity(activityTitle) {
     //store the new list in the local storage
     storeTodoListInLocalStorage(todoList)
 
+}
+
+function create_UUID(){
+    var dt = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (dt + Math.random()*16)%16 | 0;
+        dt = Math.floor(dt/16);
+        return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+    });
+    return uuid;
 }
