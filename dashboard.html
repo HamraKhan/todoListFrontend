@@ -56,4 +56,14 @@
 
 <script src="todolist.js"></script>
 
+<script>
+    var input = document.getElementById("addItemTitle");
+    input.addEventListener("keyup", function(event) {
+      if (event.keyCode === 13) {
+       event.preventDefault();
+       addTodoListItem(input.value)
+       document.getElementById("addItemTitle").value = ""
+      }
+    });
+    </script>
 </html>
