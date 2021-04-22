@@ -1,10 +1,12 @@
 class TodoActivity {
+    id = null
     title = null;
     checked = false;
     status =  'ACTiVE';
     todoDate = null;
 
-    constructor(title, checked, status, todoDate) {
+    constructor(id, title, checked, status, todoDate) {
+        this.id = id
         this.title = title;
         this.checked = checked;
         this.status = status;
