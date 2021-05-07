@@ -1,7 +1,7 @@
 //add to do list item in the local storage
 function addTodoListItem(activityTitle) {
-    //create an item object with the following data properties {id: UUID, title: itemTitle, checked: true, status: "ACTIVE"}
-    const activity = new TodoActivity(create_UUID(), activityTitle, false, 'ACTIVE', Date.now());
+    //create an item object with the following data properties {id: UUID, title: itemTitle, checked: true, status: "ACTIVE", updateDate: Date, creationDate: Date}
+    const activity = new TodoActivity(create_UUID(), activityTitle, false, 'ACTIVE', Date.now(), Date.now());
 
 
     //get the local storage to do list
@@ -17,6 +17,42 @@ function addTodoListItem(activityTitle) {
     displayTodoList(updatedTodoList)
 }
 
+//function to loop through the todo list and display the items
+function displayTodoList(todoList) {
+    //clear the html list elements
+    clearListElements()
+    //go through the to do list items
+    for (var itemIndex in todoList) {
+        //create a new to-do list element in the ui
+        const activity = todoList[itemIndex];
+
+        if (todoList[itemIndex].status==="ACTIVE") {
+            //check if the version of the activity data is the old or new version
+            createListElement(activity)
+        }
+    }
+}
+
+function updatedTodoListItem(activity) {
+    //get the local storage to do list
+    const todoList = getTodoListFromLocalStorage()
+
+    //find the activty that needs to be updated from to do list
+    //go through the to do list items
+    for (var itemIndex in todoList) {
+        if (todoList[itemIndex].id===activity.id) {
+            activity.updatedDate=Date.now()
+            todoList[itemIndex]=activity
+        }
+    }
+    //store the updated to do list in the local stroage 
+    storeTodoListInLocalStorage(todoList)
+
+    //display the updated to do list
+    displayTodoList(todoList)
+
+}
+
 function updateTodoListWithNewItem(todoList, activity) {
     //check if the todoList variable is an array type variable and assign the array type variable to updatedTodoList
     let updatedTodoList = validateTodoListVariable(todoList)
@@ -26,6 +62,26 @@ function updateTodoListWithNewItem(todoList, activity) {
 
     // return the updated to do list back to where the function was called from
     return updatedTodoList;
+}
+
+function deleteItemFromTodoList(listItemId) {
+    //get to do list from local storage
+    const todoList = getTodoListFromLocalStorage()
+    let updatedTodoList=[]
+    
+    //go through the to do list items
+    for (var itemIndex in todoList) {
+        if (todoList[itemIndex].id===listItemId) {
+            todoList[itemIndex].status="DEACTIVATED"
+        }
+        updatedTodoList.push(todoList[itemIndex])
+    }
+
+    //store the updated to do list in the local storage
+    storeTodoListInLocalStorage(updatedTodoList)
+
+    //display the new item in the UI
+    displayTodoList(updatedTodoList)
 }
 
 
@@ -68,21 +124,6 @@ function getTodoListFromLocalStorage() {
     return JSON.parse(todoListJsonString);
 }
 
-//function to loop through the todo list and display the items
-function displayTodoList(todoList) {
-    //clear the html list elements
-    clearListElements()
-    //go through the to do list items
-    for (var itemIndex in todoList) {
-        //create a new to-do list element in the ui
-        const activity = todoList[itemIndex];
-
-        if (todoList[itemIndex].status==="ACTIVE") {
-            //check if the version of the activity data is the old or new version
-            createListElement(activity)
-        }
-    }
-}
 
 function clearListElements() {
     //get the html element by mytodolist id
@@ -102,7 +143,7 @@ function createListElement(activity) {
             <label>
                 <input type="checkbox" id="test6" ${inputCheckboxToggle(activity.checked)} onclick="toggleActivity('${activity.id}')"  />
                 <span class="title">${activity.title}</span> <br />
-                <span class="sub-title">${formatToDoDate(activity.todoDate)}</span>
+                <span class="sub-title">${formatToDoDate(activity.updatedDate)}</span>
             </label>
             <button type="submit"
                 class="secondary-content btn-floating btn-small waves-effect waves-light red delete-btn"
@@ -113,25 +154,7 @@ function createListElement(activity) {
 
     myTodoList.appendChild(listItem);
 }
-function deleteItemFromTodoList(listItemId) {
-    //get to do list from local storage
-    const todoList = getTodoListFromLocalStorage()
-    let updatedTodoList=[]
-    
-    //go through the to do list items
-    for (var itemIndex in todoList) {
-        if (todoList[itemIndex].id===listItemId) {
-            todoList[itemIndex].status="DEACTIVATED"
-        }
-        updatedTodoList.push(todoList[itemIndex])
-    }
 
-    //store the updated to do list in the local storage
-    storeTodoListInLocalStorage(updatedTodoList)
-
-    //display the new item in the UI
-    displayTodoList(updatedTodoList)
-}
 function inputCheckboxToggle(state) {
     if (state){
         return "checked='true'"
@@ -139,16 +162,15 @@ function inputCheckboxToggle(state) {
 }
 
 function formatToDoDate(todoDate) {
-    let unixTimestamp = todoDate
     // Create a new JavaScript Date object based on the timestamp
     // multiplied by 1000 so that the argument is in milliseconds, not seconds.
     var date = new Date(todoDate);
 
     // day part from the timestamp
-    var day = date.getDay();
+    var day = date.getDate();
 
     // month part from the timestamp
-    var month = date.getMonth();
+    var month = date.getMonth() + 1;
     
     // year part from the timestamp
     var year = date.getFullYear();
