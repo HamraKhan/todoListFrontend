@@ -113,8 +113,12 @@ function validateTodoListVariable(todoList) {
 //get to do list from local storage
 const todoList = getTodoListFromLocalStorage()
 
+
+//get to do list from remote server
+const remoteServerTodoList = getTodoListFromRemoteServer()
+
 //display the item on the UI
-displayTodoList(todoList)
+remoteServerTodoList.then(listData => displayTodoList(listData));
 
 
 
@@ -122,6 +126,11 @@ displayTodoList(todoList)
 function getTodoListFromLocalStorage() {
     const todoListJsonString = localStorage.getItem('toDoList');
     return JSON.parse(todoListJsonString);
+}
+
+function getTodoListFromRemoteServer() {
+    return fetch ("http://localhost/backend/todolist")
+        .then(response => response.json());
 }
 
 
